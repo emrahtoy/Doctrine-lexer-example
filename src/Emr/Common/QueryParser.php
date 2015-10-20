@@ -44,6 +44,9 @@ class QueryParser
         $this->lexer = new QueryLexer($input);
     }
 
+    /**
+     * @return array
+     */
     function parse()
     {
         $value = array();

@@ -1,71 +1,86 @@
 <?php
-
 /*
  *  Emrah TOY .
  *  http://www.emrahtoy.com
  *  code@emrahtoy.com
  */
-
 namespace Emr\Common;
 
-use Emr\Common\QueryLexer;
-
 /**
- * Converts Lexer to SQL 
+ * Converts Lexer to SQL
  *
  * @author Emrah TOY <code@emrahtoy.com>
  */
-class QueryParser {
+class QueryParser
+{
     /*
      * Lexer object
-     * 
+     *
      * @var Emr\Common\QueryLexer
      */
 
     public $lexer;
 
-    
-    private $subQueryFieldName = null;
-    private $subLevel=0;
-    public $tkns = [];
+    /**
+     * @var null|mixed
+     */
+    private $sub_query_field_name = null;
 
-    function __construct($input) {
+    /**
+     * @var int
+     */
+    private $sub_level = 0;
+
+    /**
+     * @var array
+     */
+    public $tokens = array();
+
+    /**
+     * @param string $input
+     */
+    function __construct($input)
+    {
         $this->lexer = new QueryLexer($input);
     }
 
-    function parse() {
-        $value = [];
-        $this->subLevel++;
+    /**
+     * @return array
+     */
+    function parse()
+    {
+        $value = array();
+        $this->sub_level++;
         $this->lexer->moveNext();
-        
-        while ($this->lexer->lookahead!==null) {
+
+        while ($this->lexer->lookahead !== null) {
             $this->lexer->moveNext();
             if ($this->lexer->token === null)
                 continue; // TODO : there is an empty element in array
-            
+
             $val = $this->lexer->token;
-            $this->tkns[]=$val;
+            $this->tokens[] = $val;
             switch ($val['type']) {
                 case QueryLexer::T_FIELD:
                     if (!$this->lexer->isNextToken(QueryLexer::T_DOT)) {
                         $value['fields'][] = $val['value'];
                     } else {
 //                        var_dump($this->lexer->glimpse());
-                        $this->subQueryFieldName = $val['value'];
+                        $this->sub_query_field_name = $val['value'];
                     }
                     break;
                 case QueryLexer::T_FIELDS:
-                    if ($this->subQueryFieldName !== null) {
-                        $value['fields'][$this->subQueryFieldName] = $this->parse();
-                        $this->subQueryFieldName = null;
+                    if ($this->sub_query_field_name !== null) {
+                        $value['fields'][$this->sub_query_field_name] = $this->parse();
+                        $this->sub_query_field_name = null;
                     }
                     break;
                 case QueryLexer::T_INTEGER:
-                    if($this->subLevel>1){
-                        $this->subLevel--;
+                    if ($this->sub_level > 1) {
+                        $this->sub_level--;
                     }
-                    return (int) $val['value'];
-                
+                    return (int)$val['value'];
+
                 case QueryLexer::T_ORDER_BY:
                     $value['order_by'] = $this->parse();
                     break;
@@ -84,13 +99,13 @@ class QueryParser {
                 case QueryLexer::T_OPEN_PARENTHESIS:
                     break;
                 case QueryLExer::T_CLOSE_PARENTHESIS:
-                    if($this->subLevel>1){
-                        $this->subLevel--;
+                    if ($this->sub_level > 1) {
+                        $this->sub_level--;
                         return $value;
                     }
                     break;
             }
-            
+
         }
         return $value;
     }

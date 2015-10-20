@@ -21,12 +21,15 @@ class QueryParser
 
     public $lexer;
 
-    private $subQueryFieldName = null;
+    /**
+     * @var null|mixed
+     */
+    private $sub_query_field_name = null;
 
     /**
      * @var int
      */
-    private $subLevel = 0;
+    private $sub_level = 0;
 
     /**
      * @var array
@@ -41,7 +44,7 @@ class QueryParser
     function parse()
     {
         $value = array();
-        $this->subLevel++;
+        $this->sub_level++;
         $this->lexer->moveNext();
 
         while ($this->lexer->lookahead !== null) {
@@ -57,18 +60,18 @@ class QueryParser
                         $value['fields'][] = $val['value'];
                     } else {
 //                        var_dump($this->lexer->glimpse());
-                        $this->subQueryFieldName = $val['value'];
+                        $this->sub_query_field_name = $val['value'];
                     }
                     break;
                 case QueryLexer::T_FIELDS:
-                    if ($this->subQueryFieldName !== null) {
-                        $value['fields'][$this->subQueryFieldName] = $this->parse();
-                        $this->subQueryFieldName = null;
+                    if ($this->sub_query_field_name !== null) {
+                        $value['fields'][$this->sub_query_field_name] = $this->parse();
+                        $this->sub_query_field_name = null;
                     }
                     break;
                 case QueryLexer::T_INTEGER:
-                    if ($this->subLevel > 1) {
-                        $this->subLevel--;
+                    if ($this->sub_level > 1) {
+                        $this->sub_level--;
                     }
                     return (int)$val['value'];
 
@@ -90,8 +93,8 @@ class QueryParser
                 case QueryLexer::T_OPEN_PARENTHESIS:
                     break;
                 case QueryLExer::T_CLOSE_PARENTHESIS:
-                    if ($this->subLevel > 1) {
-                        $this->subLevel--;
+                    if ($this->sub_level > 1) {
+                        $this->sub_level--;
                         return $value;
                     }
                     break;

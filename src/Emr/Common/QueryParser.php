@@ -15,7 +15,7 @@ class QueryParser
 {
     /*
      * Lexer object
-     * 
+     *
      * @var Emr\Common\QueryLexer
      */
 

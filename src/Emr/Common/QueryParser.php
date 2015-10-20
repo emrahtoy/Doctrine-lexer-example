@@ -1,21 +1,18 @@
 <?php
-
 /*
  *  Emrah TOY .
  *  http://www.emrahtoy.com
  *  code@emrahtoy.com
  */
-
 namespace Emr\Common;
 
-use Emr\Common\QueryLexer;
-
 /**
- * Converts Lexer to SQL 
+ * Converts Lexer to SQL
  *
  * @author Emrah TOY <code@emrahtoy.com>
  */
-class QueryParser {
+class QueryParser
+{
     /*
      * Lexer object
      * 
@@ -24,27 +21,36 @@ class QueryParser {
 
     public $lexer;
 
-    
     private $subQueryFieldName = null;
-    private $subLevel=0;
-    public $tkns = [];
 
-    function __construct($input) {
+    /**
+     * @var int
+     */
+    private $subLevel = 0;
+
+    /**
+     * @var array
+     */
+    public $tokens = array();
+
+    function __construct($input)
+    {
         $this->lexer = new QueryLexer($input);
     }
 
-    function parse() {
-        $value = [];
+    function parse()
+    {
+        $value = array();
         $this->subLevel++;
         $this->lexer->moveNext();
-        
-        while ($this->lexer->lookahead!==null) {
+
+        while ($this->lexer->lookahead !== null) {
             $this->lexer->moveNext();
             if ($this->lexer->token === null)
                 continue; // TODO : there is an empty element in array
-            
+
             $val = $this->lexer->token;
-            $this->tkns[]=$val;
+            $this->tokens[] = $val;
             switch ($val['type']) {
                 case QueryLexer::T_FIELD:
                     if (!$this->lexer->isNextToken(QueryLexer::T_DOT)) {
@@ -61,11 +67,11 @@ class QueryParser {
                     }
                     break;
                 case QueryLexer::T_INTEGER:
-                    if($this->subLevel>1){
+                    if ($this->subLevel > 1) {
                         $this->subLevel--;
                     }
-                    return (int) $val['value'];
-                
+                    return (int)$val['value'];
+
                 case QueryLexer::T_ORDER_BY:
                     $value['order_by'] = $this->parse();
                     break;
@@ -84,13 +90,13 @@ class QueryParser {
                 case QueryLexer::T_OPEN_PARENTHESIS:
                     break;
                 case QueryLExer::T_CLOSE_PARENTHESIS:
-                    if($this->subLevel>1){
+                    if ($this->subLevel > 1) {
                         $this->subLevel--;
                         return $value;
                     }
                     break;
             }
-            
+
         }
         return $value;
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit colors="true" bootstrap="./src/bootstrap.php">
     <testsuites>
-        <testsuite name="Framework - Curl Test Suit">
+        <testsuite name="Lexer Parser Test Suit">
             <directory>./src/</directory>
         </testsuite>
     </testsuites>
@@ -15,7 +15,7 @@
 
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">../src/Monapi</directory>
+            <directory suffix=".php">../src/Emr</directory>
             <exclude>
                 <file>./src/bootstrap.php</file>
             </exclude>

@@ -3,7 +3,7 @@
 /*
  *  Emrah TOY .
  *  http://www.emrahtoy.com
- *  is@emrahtoy.com
+ *  code@emrahtoy.com
  */
 
 namespace Emr\Common;
@@ -13,7 +13,7 @@ use Emr\Common\QueryLexer;
 /**
  * Converts Lexer to SQL 
  *
- * @author Emrah TOY <is@emrahtoy.com>
+ * @author Emrah TOY <code@emrahtoy.com>
  */
 class QueryParser {
     /*

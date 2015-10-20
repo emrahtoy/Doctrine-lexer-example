@@ -3,7 +3,7 @@
 /*
  *  Emrah TOY .
  *  http://www.emrahtoy.com
- *  is@emrahtoy.com
+ *  code@emrahtoy.com
  */
 
 namespace Emr\Common;
@@ -11,7 +11,7 @@ namespace Emr\Common;
 /**
  * Converts GET Query for QuearyParser
  *
- * @author Emrah TOY <is@emrahtoy.com>
+ * @author Emrah TOY <code@emrahtoy.com>
  */
 class QueryLexer extends \Doctrine\Common\Lexer\AbstractLexer {
 

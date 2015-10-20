@@ -2,7 +2,7 @@
 <!--
   Emrah TOY .
   http://www.emrahtoy.com
-  is@emrahtoy.com
+  code@emrahtoy.com
 -->
 <html>
     <head>
@@ -11,7 +11,7 @@
     </head>
     <body>
         <?php
-  
+        require_once "src/test.php";
         ?>
     </body>
 </html>

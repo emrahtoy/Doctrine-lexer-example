@@ -36,6 +36,9 @@ class QueryParser
      */
     public $tokens = array();
 
+    /**
+     * @param string $input
+     */
     function __construct($input)
     {
         $this->lexer = new QueryLexer($input);

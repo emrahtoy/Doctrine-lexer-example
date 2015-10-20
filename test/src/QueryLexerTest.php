@@ -5,7 +5,7 @@
  * Date: 20.10.2015
  * Time: 16:32
  */
-class QueryLexerTest
+class QueryLexerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Emr\Common\QueryLexer

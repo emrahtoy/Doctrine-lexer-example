@@ -17,4 +17,12 @@ class QueryLexerTest extends \PHPUnit_Framework_TestCase
         $input="name,user_id,photo.fields(photo_id,url,tagged_people.fields(name,people_id,city.fields(city_id,name).order_by(name).ASC.limit(20)).limit(5).offset(2).DESC";
         $this->lexer = new \Emr\Common\QueryLexer($input);
     }
+
+    /**
+     * @todo write tests
+     */
+    public function testLexer()
+    {
+        $this->assertTrue(true);
+    }
 }
